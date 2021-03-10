@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+  <style>
+.grad1 {
+  height: 200px;
+  background-color: red; /* For browsers that do not support gradients */
+  background-image: linear-gradient(red, yellow);
+}
+</style>
+<div class="container grad1">
+<h3>Policy Assistant - Education Information Management and Surveillance System</h3>
+
+  <p><i><strong>This software is intended to strengthen data gathering and use at the various levels of the education system, which will ultimately inform policy and planning decisions. The software will be used to assist teachers, principals and other administrative staff systematically examine and enhance the overall
+    performance of the education sector, policy/ program planning and implementation as well as monitoring and evaluation of educational outcomes.</strong></i></p>
+
+<div class ="container p-3 bg-dark text-white" >
+<p>Functionality of the software should include, but not be limited to the following:
+  <ul>
+<li>Measurement of enrollment, class size, and final results</li>
+<li>Determine factors that influence individual student, school, and national performance</li>
+<li>Report and analyze achievement gaps between districts/ schools and the trend over time</li>
+<li>Auto- prediction/flagging of students who are at high risk of failing or dropping out</li>
+<li>Categorize people who struggle or are likely to struggle for early support or intervention</li>
+<li>Outlier detection, which identifies schools/ districts which seems to performing above or below the national mean/ meeting educational outcomes successfully or unsuccessfully, and the contributing factors.</li>
+<li>Detection learning disability and behavioral disorder based on student data as well as identification of students to refer for evaluation, early intervention, and special needs services.</li></ul></p>
+</div>
+</div>
+
+{% endblock body %}
