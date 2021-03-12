@@ -1,9 +1,23 @@
 Click==7.0 
-Flask==1.1.1 
-gunicorn==19.9.0 
+gunicorn
 itsdangerous==1.1.0 
 Jinja2==2.10.1 
 MarkupSafe==1.1.1 
 Werkzeug==0.15.6
-sqlalchemy
+Flask
 
+Flask-Login
+Flask-Migrate
+Flask-Script
+Flask-SQLAlchemy
+Flask-WTF
+Flask-User
+
+# Automated tests
+pytest
+pytest-cov
+
+# This file is used by pip to install required python packages
+# Usage: pip install -r requirements.txt
+
+# Flask Framework
