@@ -43,7 +43,8 @@ DATABASE CONFIGURATION FOR CREATING OBJECT OF SQLAlchemy
 
 
 app.config['SECRET_KEY'] = 'donotcopy!!!this$$$'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/pa_slu'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://doadmin:yqvt02qwx2s7adve@private-db-mysql-nyc3-40834-do-user-2954880-0.b.db.ondigitalocean.com:25060/defaultdb?ssl-mode=REQUIRED'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/pa_slu'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
