@@ -2,11 +2,7 @@
 .cache/
 .ssh/
 .venvs/
-flaskapp/
-snap/
-templates/__pycache__/
 .bash_history
 .bashrc
 .cloud-locale-test.skip
-.gitconfig
-.profile
+
