@@ -43,8 +43,8 @@ DATABASE CONFIGURATION FOR CREATING OBJECT OF SQLAlchemy
 
 
 app.config['SECRET_KEY'] = 'donotcopy!!!this$$$'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://doadmin:l1wtdw96alc2xbvk@paemis-do-user-2954880-0.b.db.ondigitalocean.com:25060/defaultdb?ssl-mode=REQUIRED'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/pa_slu'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://mildred:hj52tlr1vvo6ri2p@db-mysql-nyc3-09297-do-user-2954880-0.b.db.ondigitalocean.com:25060/pa_slu'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/pa_slu'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -93,7 +93,7 @@ class Users(db.Model):
     user_first_name= db.Column(db.String(255), unique=True)
     user_middle_name= db.Column(db.String(255), unique=True)
     user_last_name= db.Column(db.String(255), unique=True)
-    user_email = db.Column(db.String(50), unique=True)
+    user_email = db.Column(db.String(255), unique=True)
     user_password = db.Column(db.String(256), unique=True)
     
     #user_role = db.Column(db.String(50), db.ForeignKey('roles.role_name'), unique = True)
@@ -115,6 +115,9 @@ class Userpermissions(db.Model):
     #user = db.relationship("Users", cascade="save-update")
     
     permissions= db.Column(db.Text)
+    
+db.create_all()
+db.session.commit()
     
     
 """
@@ -196,4 +199,9 @@ if __name__ == '__main__':
     # Creating database tables
     db.create_all()
     # running server
-    app.run()
+    app.run(host='0.0.0.0')
+
+
+
+#if __name__ == "__main__":
+	#app.run(host='0.0.0.0')

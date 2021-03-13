@@ -23,7 +23,7 @@ class RegisterForm(Form):
     firstname = StringField("First Name", validators=[validators.Length(min=3, max=50), Required(message="First Name is required")])
     middlename = StringField("Middle Name", validators=[validators.Length(min=3, max=50)])
     lastname = StringField("Last Name", validators=[validators.Length(min=3, max=50), Required(message="Last Name is required")])
-    email = StringField("Email", validators=[validators.Email(message="Please enter a valid email address")])
+    email = StringField("Email", validators=[Required(message="Please enter a valid email address")])
     password = PasswordField("Password", validators=[
 
         validators.DataRequired(message="Please Fill This Field"),
