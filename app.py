@@ -29,7 +29,6 @@ from forms import LoginForm, RegisterForm
 
 
 key = "donotsteal$$$$"
-from helpers.AESCipher import AESCipher
 
 # ciphertext = AESCipher(key).encrypt(plaintext)
 # print(ciphertext)
@@ -152,14 +151,14 @@ def register():
     if request.method == "POST" and form.validate():
         # if all is fine, generate hashed password
         # hashed_password = generate_password_hash(form.password.data, method='sha256')
-        encrypted_email = aes.AESCipher(key).encrypt(form.email.data)
-        encrypted_password = aes.AESCipher(key).encrypt(form.password.data)
+        # encrypted_email = aes.AESCipher(key).encrypt(form.email.data)
+        # encrypted_password = aes.AESCipher(key).encrypt(form.password.data)
         # create new user model object
         new_user = Users(
             user_id=form.user_id.data,
-            user_first_name=aes.AESCipher(key).encrypt(form.firstname.data),
-            user_middle_name=aes.AESCipher(key).encrypt(form.middlename.data),
-            user_last_name=aes.AESCipher(key).encrypt(form.lastname.data),
+            # user_first_name=aes.AESCipher(key).encrypt(form.firstname.data),
+            # user_middle_name=aes.AESCipher(key).encrypt(form.middlename.data),
+            # user_last_name=aes.AESCipher(key).encrypt(form.lastname.data),
             # role = form.role.data,
             user_email=encrypted_email,
             user_password=encrypted_password,
@@ -184,10 +183,10 @@ def login():
     if request.method == "POST" and form.validate:
         # checking that user is exist or not by email
         user = Users.query.filter_by(
-            user_email=aes.AESCipher(key).encrypt(form.email.data)
+            # user_email=aes.AESCipher(key).encrypt(form.email.data)
         )
         passwd = Users.query.filter_by(
-            user_password=aes.AESCipher(key).encrypt(form.password.data)
+            # user_password=aes.AESCipher(key).encrypt(form.password.data)
         )
         if user:
             # if user exist in database than we will compare our database hased password and password come from login form
