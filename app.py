@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 """
 Author : Mildred Fakoya
@@ -8,32 +8,40 @@ Date : March 9, 2021
 
 # Import flask and its modules needed for the functionalities of this page
 
-from flask import Flask, render_template, flash, redirect, request, session, logging, url_for
+from flask import (
+    Flask,
+    render_template,
+    flash,
+    redirect,
+    request,
+    session,
+    logging,
+    url_for,
+)
 
 from flask_sqlalchemy import SQLAlchemy
 
-#from flask_login import LoginManager
+# from flask_login import LoginManager
 
 from sqlalchemy.orm import backref
 
 from forms import LoginForm, RegisterForm
 
 
-
-
-import aescipher as aes
 key = "donotsteal$$$$"
-#ciphertext = AESCipher(key).encrypt(plaintext)
-#print(ciphertext)
+from helpers.AESCipher import AESCipher
+
+# ciphertext = AESCipher(key).encrypt(plaintext)
+# print(ciphertext)
 # ZxFrL1kMlMc/7TWrMiSS3gyZCikhvVhoXxChFdKKlf0=
-#print(plaintext == AESCipher(key).decrypt(ciphertext))
+# print(plaintext == AESCipher(key).decrypt(ciphertext))
 # True
 
-#Creates a flask application object
+# Creates a flask application object
 app = Flask(__name__)
 
 
-#intantiate the aes class here
+# intantiate the aes class here
 """
 DATABASE CONFIGURATION FOR CREATING OBJECT OF SQLAlchemy
 # Mysql database, user name root, no password. if your sql database uses a password, the syntax is as below.
@@ -42,10 +50,12 @@ DATABASE CONFIGURATION FOR CREATING OBJECT OF SQLAlchemy
 """
 
 
-app.config['SECRET_KEY'] = 'donotcopy!!!this$$$'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://mildred:hj52tlr1vvo6ri2p@db-mysql-nyc3-09297-do-user-2954880-0.b.db.ondigitalocean.com:25060/pa_slu'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/pa_slu'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SECRET_KEY"] = "donotcopy!!!this$$$"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "mysql://mildred:hj52tlr1vvo6ri2p@db-mysql-nyc3-09297-do-user-2954880-0.b.db.ondigitalocean.com:25060/pa_slu"
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/pa_slu'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 """
@@ -63,145 +73,156 @@ modified_by displays the name of the administratgor who last modified the user's
 
 class Roles(db.Model):
 
-    __tablename__ = 'roles'
-    
-    id = db.Column(db.Integer, primary_key=True)   
-    role_id= db.Column(db.Integer, unique=True)
+    __tablename__ = "roles"
+
+    id = db.Column(db.Integer, primary_key=True)
+    role_id = db.Column(db.Integer, unique=True)
     role_name = db.Column(db.String(50), unique=True)
-    #permission = db.relationship("Permissions", backref="roles")
-    #user = db.relationship("Users", backref="roles")
+    # permission = db.relationship("Permissions", backref="roles")
+    # user = db.relationship("Users", backref="roles")
 
 
 class Permissions(db.Model):
 
-    __tablename__ = 'permissions'
+    __tablename__ = "permissions"
 
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String(50))
-    #role = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
-    #permission_role = db.relationship("Roles", cascade="save-update")
-    permission_id= db.Column(db.Integer, unique=True)
+    # role = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
+    # permission_role = db.relationship("Roles", cascade="save-update")
+    permission_id = db.Column(db.Integer, unique=True)
     permission_name = db.Column(db.String(30), unique=True)
-    
+
 
 class Users(db.Model):
 
-    __tablename__ = 'users'
-    
-    id = db.Column(db.Integer, primary_key=True)    
-    user_id = db.Column(db.String(20), unique =True)
-    user_first_name= db.Column(db.String(255), unique=True)
-    user_middle_name= db.Column(db.String(255), unique=True)
-    user_last_name= db.Column(db.String(255), unique=True)
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(20), unique=True)
+    user_first_name = db.Column(db.String(255), unique=True)
+    user_middle_name = db.Column(db.String(255), unique=True)
+    user_last_name = db.Column(db.String(255), unique=True)
     user_email = db.Column(db.String(255), unique=True)
     user_password = db.Column(db.String(256), unique=True)
-    
-    #user_role = db.Column(db.String(50), db.ForeignKey('roles.role_name'), unique = True)
-    #users_role = db.relationship("Roles", cascade="save-update")
-    
+
+    # user_role = db.Column(db.String(50), db.ForeignKey('roles.role_name'), unique = True)
+    # users_role = db.relationship("Roles", cascade="save-update")
+
     activation_code = db.Column(db.String(255), unique=True)
-    activitaion_status= db.Column(db.String(255))
+    activitaion_status = db.Column(db.String(255))
     last_seen = db.Column(db.DateTime)
     last_modified = db.Column(db.DateTime)
     modified_by = db.Column(db.String(255), unique=True)
-    
+
+
 class Userpermissions(db.Model):
-    
-    __tablename__ = 'userpermissions'
-    
+
+    __tablename__ = "userpermissions"
+
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique =True)
-    #email = db.Column(db.String(255), db.ForeignKey('users.user_email'))
-    #user = db.relationship("Users", cascade="save-update")
-    
-    permissions= db.Column(db.Text)
-    
+    email = db.Column(db.String(255), unique=True)
+    # email = db.Column(db.String(255), db.ForeignKey('users.user_email'))
+    # user = db.relationship("Users", cascade="save-update")
+
+    permissions = db.Column(db.Text)
+
+
 db.create_all()
 db.session.commit()
-    
-    
+
+
 """
 CREATE THE ROUTES TO THE INDEX PAGE, THE LOGIN PAGE AND THE REGISTER PAGE
 note to self : Take the registration to the administrative module
 """
 
-@app.route('/')
+
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
+
 
 # User Registration API Endpoint
-@app.route('/register/', methods = ['GET', 'POST'])
+@app.route("/register/", methods=["GET", "POST"])
 def register():
     # Creating RegistrationForm class object
     form = RegisterForm(request.form)
     # Cheking that method is post and form is valid or not.
-    if request.method == 'POST' and form.validate():
+    if request.method == "POST" and form.validate():
         # if all is fine, generate hashed password
-        #hashed_password = generate_password_hash(form.password.data, method='sha256')
+        # hashed_password = generate_password_hash(form.password.data, method='sha256')
         encrypted_email = aes.AESCipher(key).encrypt(form.email.data)
         encrypted_password = aes.AESCipher(key).encrypt(form.password.data)
         # create new user model object
         new_user = Users(
-            user_id =  form.user_id.data,
-            user_first_name = aes.AESCipher(key).encrypt(form.firstname.data), 
-            user_middle_name = aes.AESCipher(key).encrypt(form.middlename.data), 
-            user_last_name = aes.AESCipher(key).encrypt(form.lastname.data), 
-            #role = form.role.data,
-            user_email = encrypted_email, 
-            user_password = encrypted_password )
+            user_id=form.user_id.data,
+            user_first_name=aes.AESCipher(key).encrypt(form.firstname.data),
+            user_middle_name=aes.AESCipher(key).encrypt(form.middlename.data),
+            user_last_name=aes.AESCipher(key).encrypt(form.lastname.data),
+            # role = form.role.data,
+            user_email=encrypted_email,
+            user_password=encrypted_password,
+        )
         # saving user object into data base with hashed password
         db.session.add(new_user)
         db.session.commit()
-        flash('You have successfully registered', 'success')
+        flash("You have successfully registered", "success")
         # if registration successful, then redirecting to login Api
-        return redirect(url_for('login'))
+        return redirect(url_for("login"))
     else:
         # if method is Get, than render registration form
-        return render_template('register.html', form = form)
+        return render_template("register.html", form=form)
     # Login API endpoint implementation
-    
-@app.route('/login/', methods = ['GET', 'POST'])
+
+
+@app.route("/login/", methods=["GET", "POST"])
 def login():
     # Creating Login form object
     form = LoginForm(request.form)
     # verifying that method is post and form is valid
-    if request.method == 'POST' and form.validate:
+    if request.method == "POST" and form.validate:
         # checking that user is exist or not by email
-        user = Users.query.filter_by(user_email = aes.AESCipher(key).encrypt(form.email.data))
-        passwd = Users.query.filter_by(user_password = aes.AESCipher(key).encrypt(form.password.data))
+        user = Users.query.filter_by(
+            user_email=aes.AESCipher(key).encrypt(form.email.data)
+        )
+        passwd = Users.query.filter_by(
+            user_password=aes.AESCipher(key).encrypt(form.password.data)
+        )
         if user:
-            # if user exist in database than we will compare our database hased password and password come from login form 
-            if (passwd):
+            # if user exist in database than we will compare our database hased password and password come from login form
+            if passwd:
                 # if password is matched, allow user to access and save email and username inside the session
-                flash('You have successfully logged in.', "success")
-                session['logged_in'] = True
-                session['user_email'] = user.user_email
+                flash("You have successfully logged in.", "success")
+                session["logged_in"] = True
+                session["user_email"] = user.user_email
                 # After successful login, redirecting to home page
-                return redirect(url_for('home'))
+                return redirect(url_for("home"))
 
             else:
 
                 # if password is in correct , redirect to login page
-                flash('Username or Password Incorrect', "Danger")
+                flash("Username or Password Incorrect", "Danger")
 
-                return redirect(url_for('login'))
+                return redirect(url_for("login"))
     # rendering login page
-    return render_template('login.html', form = form)
+    return render_template("login.html", form=form)
 
-@app.route('/logout/')
+
+@app.route("/logout/")
 def logout():
     # Removing data from session by setting logged_flag to False.
-    session['logged_in'] = False
+    session["logged_in"] = False
     # redirecting to home page
-    return redirect(url_for('home'))
+    return redirect(url_for("home"))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # Creating database tables
     db.create_all()
     # running server
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")
 
 
-
-#if __name__ == "__main__":
-	#app.run(host='0.0.0.0')
+# if __name__ == "__main__":
+# app.run(host='0.0.0.0')
