@@ -6,3 +6,4 @@
 .bashrc
 .cloud-locale-test.skip
 
+.env
